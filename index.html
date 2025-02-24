@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup & Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="auth.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Signup Form -->
+        <div class="form-container" id="signup-form">
+            <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
+            <h2>Create an Account</h2>
+            <form id="signup">
+                <input type="text" id="signup-username" placeholder="Username" required>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit" id="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="form-container active" id="login-form">
+            <div id="signInMessage" class="messageDiv" style="display: none;"></div>
+            <h2>Login</h2>
+            <form id="login">
+                <input type="email" id="login-email" placeholder="Email" >
+                <input type="password" id="login-password" placeholder="Password" >
+                <button type="submit" id="login-button">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between Login and Signup forms
+        function toggleForms() {
+            document.getElementById("signup-form").classList.toggle("active");
+            document.getElementById("login-form").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

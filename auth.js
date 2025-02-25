@@ -2,8 +2,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -30,10 +28,7 @@ function showMessage(message, divId) {
 
 const submitButton = document.querySelector("#submit");
 
-// login
-
-
-// froms
+// forms
 const signupForm = document.getElementById("signup-form");   // Signup form section
 const loginForm = document.getElementById("login-form");     // Login form section
 
@@ -47,22 +42,28 @@ submitButton.addEventListener("click", (event) => {
   const auth = getAuth();
   const db = getFirestore();
 
+  // Create the user with Firebase Authentication
   createUserWithEmailAndPassword(auth, emailInput, passwordInput)
-    .then((userCredintal) => {
-      const user = userCredintal.user;
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      // Prepare user data to save to Firestore, including the password
       const userData = {
         email: emailInput,
         userName: usernameInput,
-
+        password: passwordInput,  // Storing the password directly
       };
+
       showMessage('Account created Successfully', 'signUpMessage');
+
+      // Save user data to Firestore
       const docRef = doc(db, "users", user.uid);
       setDoc(docRef, userData)
         .then(() => {
           window.location.href = 'index.html';
         })
         .catch((error) => {
-          console.error("error writing document", error);
+          console.error("Error writing document", error);
         });
     })
     .catch((error) => {
@@ -76,7 +77,6 @@ submitButton.addEventListener("click", (event) => {
     })
 });
 
-
 const loginBtn = document.querySelector("#login-button");
 
 loginBtn.addEventListener("click", (event) => {
@@ -87,13 +87,13 @@ loginBtn.addEventListener("click", (event) => {
   const auth = getAuth();
 
   signInWithEmailAndPassword(auth, loginEmail, loginPass)
-    .then((userCredintal) => {
-      showMessage("login is successful", "signInMessage");
-      const user = userCredintal.user;
+    .then((userCredential) => {
+      showMessage("Login is successful", "signInMessage");
+      const user = userCredential.user;
       localStorage.setItem('logedInUserId', user.uid);
       setTimeout(() => {
-      window.location.href = "homepage.html";
-    },2000)
+        window.location.href = "homepage.html";
+      }, 2000)
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -103,6 +103,6 @@ loginBtn.addEventListener("click", (event) => {
         showMessage("Account doesn't exist", "signInMessage");
       } else {
         showMessage("An error occurred. Please try again.", "signInMessage");
-      }      
+      }
     })
-})
+});
